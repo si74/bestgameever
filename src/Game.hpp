@@ -24,6 +24,7 @@ class Game {
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		bool isRunning;
+		int count = 0;
 };
 
 #endif // Game_hpp
