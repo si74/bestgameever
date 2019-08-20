@@ -33,7 +33,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
 
-
+	SDL_Surface* tmpSurfaceCircle = IMG_Load("../assets/circle.png");
+	tex = SDL_CreateTextureFromSurface(renderer, tmpSurfaceCircle);
+	SDL_FreeSurface(tmpSurfaceCircle);
     // connects our texture with dest to control position
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
 
@@ -56,17 +58,58 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 }
 
 void Game::handleEvents() {
-	SDL_Event event;
-	SDL_PollEvent(&event);
-	switch (event.type) {
-		case SDL_QUIT:
-			isRunning = false;
-			break;
 
-		default:
-			break;
+	SDL_Event event; 
 
-	}
+	// Events mangement 
+	while (SDL_PollEvent(&event)) { 
+	    switch (event.type) { 
+
+	    case SDL_SCANCODE_ESCAPE: //SDL_QUIT
+	        // handling of close button 
+	        close = 1; 
+	        break; 
+
+	    case SDL_KEYDOWN: 
+	        // keyboard API for key pressed 
+	        switch (event.key.keysym.scancode) { 
+	        case SDL_SCANCODE_W: 
+	        case SDL_SCANCODE_UP: 
+	            dest.y -= speed / 30; 
+	            break; 
+	        case SDL_SCANCODE_A: 
+	        case SDL_SCANCODE_LEFT: 
+	            dest.x -= speed / 30; 
+	            break; 
+	        case SDL_SCANCODE_S: 
+	        case SDL_SCANCODE_DOWN: 
+	            dest.y += speed / 30; 
+	            break; 
+	        case SDL_SCANCODE_D: 
+	        case SDL_SCANCODE_RIGHT: 
+	            dest.x += speed / 30; 
+	            break; 
+	        default:
+				break;
+	        } 
+	    } 
+	} 
+
+	// right boundary 
+	if (dest.x + dest.w > 1000) 
+	    dest.x = 1000 - dest.w; 
+
+	// left boundary 
+	if (dest.x < 0) 
+	    dest.x = 0; 
+
+	// bottom boundary 
+	if (dest.y + dest.h > 1000) 
+	    dest.y = 1000 - dest.h; 
+
+	// upper boundary 
+	if (dest.y < 0) 
+	    dest.y = 0; 
 }
 
 
@@ -74,11 +117,14 @@ void Game::update() {
 	count++;
 	destRect.h = 128;
 	destRect.w = 128;
+
+
 }
 
 void Game::render() {
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
+	//SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
+	SDL_RenderCopy(renderer, tex, NULL, &dest);
 	SDL_RenderPresent(renderer);
 }
 
