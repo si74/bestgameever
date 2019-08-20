@@ -4,6 +4,7 @@
 SDL_Texture* playerTexture;
 SDL_Rect srcRect, destRect;
 
+
 Game::Game() {}
 Game::~Game() {}
 
@@ -32,6 +33,33 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
 	SDL_FreeSurface(tmpSurface);
+
+	// let us control our image position 
+    // so that we can move it with our keyboard. 
+    
+  
+    // connects our texture with dest to control position 
+    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h); 
+  
+    // adjust height and width of our image box. 
+    dest.w /= 6; 
+    dest.h /= 6; 
+  
+    // sets initial x-position of object 
+    dest.x = (1000 - dest.w) / 2; 
+  
+    // sets initial y-position of object 
+    dest.y = (1000 - dest.h) / 2; 
+  
+    // controls annimation loop 
+    close = 0; 
+  
+    // speed of box 
+    speed = 300; 
+
+    x = 0;
+    y = 0;
+  
 }
 
 void Game::handleEvents() {
@@ -47,6 +75,7 @@ void Game::handleEvents() {
 
 	}
 }
+
 
 void Game::update() {
 	count++;
@@ -67,3 +96,4 @@ void Game::clean() {
 	SDL_Quit();
 	printf("Game Cleaned\n");
 }
+

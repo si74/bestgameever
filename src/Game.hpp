@@ -7,6 +7,13 @@
 class Game {
 
 	public:
+		int x = 0;
+		int y = 0;
+		int close = 0; 
+
+  
+		// speed of box 
+		int speed = 300; 
 		Game();
 		~Game();
 
@@ -16,15 +23,22 @@ class Game {
 		void render();
 		void clean();
 
+		void playerJump();
+		void playerRun();
+
+
 		bool running() {
 			return isRunning;
 		};
+
+
 
 	private:
 		SDL_Window* window;
 		SDL_Renderer* renderer;
 		bool isRunning;
 		int count = 0;
+		SDL_Rect dest; 
 };
 
 #endif // Game_hpp
