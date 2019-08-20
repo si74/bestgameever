@@ -7,13 +7,10 @@
 class Game {
 
 	public:
-		int x = 0;
-		int y = 0;
-		int close = 0; 
+		int close = 0;
 
-  
-		// speed of box 
-		int speed = 300; 
+		// speed of box
+		int speed = 300;
 		Game();
 		~Game();
 
@@ -38,7 +35,9 @@ class Game {
 		SDL_Renderer* renderer;
 		bool isRunning;
 		int count = 0;
-		SDL_Rect dest; 
+		SDL_Rect dest;
+		SDL_Texture* playerTexture;
+		SDL_Rect srcRect, destRect;
 };
 
 #endif // Game_hpp
