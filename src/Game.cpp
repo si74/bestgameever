@@ -59,15 +59,8 @@ void Game::handleEvents() {
 
 	// Events mangement 
 	while (SDL_PollEvent(&event)) { 
-		switch (event.type) { 
 
-		case SDL_QUIT:
-			// handling of close button 
-			isRunning = false; 
-			printf("close app\n");
-			break; 
-
-		case SDL_KEYDOWN: 
+		if (event.type == SDL_KEYDOWN){ 
 			// keyboard API for key pressed 
 			switch (event.key.keysym.scancode) { 
 				case SDL_SCANCODE_ESCAPE:
