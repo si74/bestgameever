@@ -1,4 +1,4 @@
-OBJS = main.cpp Game.cpp Game.hpp
+OBJS = main.cpp Game.cpp Game.hpp TextureManager.cpp TextureManager.hpp
 
 OBJ_Name = SDLMain
 

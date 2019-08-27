@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "TextureManager.hpp"
 #include <stdio.h>
 
 
@@ -28,14 +29,9 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	isRunning = true;
 
-	SDL_Surface* tmpSurface = IMG_Load("../assets/player.png");
-
-	playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-
-	SDL_Surface* tmpSurfaceCircle = IMG_Load("../assets/circle.png");
-	tex = SDL_CreateTextureFromSurface(renderer, tmpSurfaceCircle);
-	SDL_FreeSurface(tmpSurfaceCircle);
+	// loads file as texture
+	tex = TextureManager::LoadTexture("../assets/circle.png", renderer);
+	
     // connects our texture with dest to control position
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
 
@@ -102,7 +98,7 @@ void Game::handleEvents() {
 
 	// right boundary 
 	if (dest.x + dest.w > 1000) {
-		x = 1000 - dest.w; 
+		dest.x = 1000 - dest.w; 
 	}
 
 	// left boundary 
