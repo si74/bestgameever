@@ -7,7 +7,6 @@
 
 Game::Game() {}
 Game::~Game() {}
-
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
 	int flags = (fullscreen) ? SDL_WINDOW_FULLSCREEN : 0;
 
@@ -30,7 +29,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	isRunning = true;
 
 	// loads file as texture
-	tex = TextureManager::LoadTexture("../assets/circle.png", renderer);
+	tex = TextureManager::LoadTexture("../assets/player.png", renderer);
 	
     // connects our texture with dest to control position
     SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
@@ -51,10 +50,29 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // speed of box
     speed = 300;
 
+    SDL_Rect block1;
+	renderBlock(window, renderer, &block1);
+}
+
+void Game::renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box) {
+	box->w = 10; 
+	box->h = 10; 
+	box->x = 0;
+	box->y = 0; 
+
+	//window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 250, 250, NULL);
+	//renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED);
+	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+	SDL_RenderClear(renderer);
+	//outline rect
+	SDL_SetRenderDrawColor(renderer, 0 , 0, 0, 255);
+	SDL_RenderDrawRect(renderer, box);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//fill up rectangle with color
+	//SDL_RenderFillRect(renderer, box);
 }
 
 void Game::handleEvents() {
-
 	SDL_Event event; 
 
 	// Events mangement 
@@ -120,8 +138,8 @@ void Game::update() {
 }
 
 void Game::render() {
+	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
 	SDL_RenderClear(renderer);
-	//SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
 	SDL_RenderCopy(renderer, tex, NULL, &dest);
 	SDL_RenderPresent(renderer);
 }

@@ -15,6 +15,7 @@ class Game {
 		~Game();
 
 		void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+		void renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box);
 		void handleEvents();
 		void update();
 		void render();
