@@ -29,10 +29,10 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	isRunning = true;
 
 	// loads file as texture
-	tex = TextureManager::LoadTexture("../assets/player.png", renderer);
+	playerTex = TextureManager::LoadTexture("../assets/player.png", renderer);
 	
     // connects our texture with dest to control position
-    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    SDL_QueryTexture(playerTex, NULL, NULL, &dest.w, &dest.h);
 
     // adjust height and width of our image box.
     dest.w /= 6;
@@ -50,8 +50,7 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // speed of box
     speed = 300;
 
-    SDL_Rect block1;
-	renderBlock(window, renderer, &block1);
+    
 }
 
 void Game::renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box) {
@@ -140,7 +139,10 @@ void Game::update() {
 void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
 	SDL_RenderClear(renderer);
-	SDL_RenderCopy(renderer, tex, NULL, &dest);
+	
+	SDL_Rect block1;
+	renderBlock(window, renderer, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
+	SDL_RenderCopy(renderer, playerTex, NULL, &dest); // player
 	SDL_RenderPresent(renderer);
 }
 

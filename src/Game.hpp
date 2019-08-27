@@ -39,7 +39,7 @@ class Game {
 		SDL_Rect dest;
 		SDL_Texture* playerTexture;
 		SDL_Rect srcRect, destRect;
-		SDL_Texture* tex;
+		SDL_Texture* playerTex;
 };
 
 #endif // Game_hpp
