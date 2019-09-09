@@ -169,13 +169,12 @@ void Game::render() {
 	SDL_SetRenderDrawColor(renderer, 255,255,255,255); // set color to write
 	SDL_RenderClear(renderer); // clear renderer with latest set color
 
-	//map->DrawMap(); // render map
-	SDL_Rect block1;
-	renderBlock(window, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
-
+	//SDL_Rect block1;
+	//renderBlock(window, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
+	map->DrawMap();
 	SDL_RenderCopy(renderer, playerTex, NULL, &dest); // player
 	//SDL_RenderCopy(renderer, map->water, NULL, &(map->dest));
-	map->DrawMap();
+
 	SDL_RenderPresent(renderer);
 }
 
