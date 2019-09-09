@@ -3,6 +3,8 @@
 
 #include "SDL2/SDL.h"
 #include "SDL2/SDL_image.h"
+#include "GameObject.hpp"
+#include "Map.hpp"
 
 class Game {
 
@@ -15,7 +17,8 @@ class Game {
 		~Game();
 
 		void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
-		void renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box);
+		void DrawMap();
+		void renderBlock(SDL_Window* window, SDL_Rect* box);
 		void handleEvents();
 		void update();
 		void render();
@@ -24,6 +27,7 @@ class Game {
 		void playerJump();
 		void playerRun();
 
+		static SDL_Renderer* renderer;
 
 		bool running() {
 			return isRunning;
@@ -33,13 +37,14 @@ class Game {
 
 	private:
 		SDL_Window* window;
-		SDL_Renderer* renderer;
 		bool isRunning;
 		int count = 0;
 		SDL_Rect dest;
 		SDL_Texture* playerTexture;
 		SDL_Rect srcRect, destRect;
 		SDL_Texture* playerTex;
+		GameObject* player;
+		Map* map;
 };
 
 #endif // Game_hpp
