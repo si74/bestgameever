@@ -3,7 +3,7 @@
 #include <stdio.h>
 
 
-
+SDL_Renderer* Game::renderer = nullptr;
 
 Game::Game() {}
 Game::~Game() {}
@@ -29,31 +29,60 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	isRunning = true;
 
 	// loads file as texture
-	playerTex = TextureManager::LoadTexture("../assets/player.png", renderer);
+	playerTex = TextureManager::LoadTexture("../assets/player.png");
 	
-    // connects our texture with dest to control position
-    SDL_QueryTexture(playerTex, NULL, NULL, &dest.w, &dest.h);
 
-    // adjust height and width of our image box.
-    dest.w /= 6;
-    dest.h /= 6;
+	// connects our texture with dest to control position
+	SDL_QueryTexture(playerTex, NULL, NULL, &dest.w, &dest.h);
 
-    // sets initial x-position of object
-    dest.x = (1000 - dest.w) / 2;
+	// adjust height and width of our image box.
+	dest.w /= 6;
+	dest.h /= 6;
 
-    // sets initial y-position of object
-    dest.y = (1000 - dest.h) / 2;
+	// sets initial x-position of object
+	dest.x = (1000 - dest.w) / 2;
 
-    // controls annimation loop
-    close = 0;
+	// sets initial y-position of object
+	dest.y = (1000 - dest.h) / 2;
 
-    // speed of box
-    speed = 300;
+	// controls annimation loop
+	close = 0;
 
-    
+	// speed of box
+	speed = 300;
+
+	map = new Map();
+
 }
 
-void Game::renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box) {
+void Game::DrawMap() {
+	int type = 0;
+
+	for(int row = 0; row < 20; row++) {
+		for(int col = 0;  col < 25; col++) {
+			type = map->map[row][col];
+
+			map->dest.x = col * 32;
+			map->dest.y = row * 32;
+
+			switch (type) {
+				case 0:
+					TextureManager::Draw(map->water, map->src, map->dest);
+					break;
+				case 1: 
+					TextureManager::Draw(map->grass, map->src, map->dest);
+					break;
+				case 2:
+					TextureManager::Draw(map->dirt, map->src, map->dest);
+					break;
+				default:
+					break;
+			}
+		}
+	}
+}
+
+void Game::renderBlock(SDL_Window* window, SDL_Rect* box) {
 	box->w = 10; 
 	box->h = 10; 
 	box->x = 0;
@@ -133,16 +162,20 @@ void Game::update() {
 	destRect.h = 128;
 	destRect.w = 128;
 
-
+	//map->LoadMap(); todo text file with different arrays
 }
 
 void Game::render() {
-	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
-	SDL_RenderClear(renderer);
-	
+	SDL_SetRenderDrawColor(renderer, 255,255,255,255); // set color to write
+	SDL_RenderClear(renderer); // clear renderer with latest set color
+
+	//map->DrawMap(); // render map
 	SDL_Rect block1;
-	renderBlock(window, renderer, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
+	renderBlock(window, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
+
 	SDL_RenderCopy(renderer, playerTex, NULL, &dest); // player
+	//SDL_RenderCopy(renderer, map->water, NULL, &(map->dest));
+	map->DrawMap();
 	SDL_RenderPresent(renderer);
 }
 
