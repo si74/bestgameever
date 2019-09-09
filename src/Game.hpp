@@ -15,6 +15,7 @@ class Game {
 		~Game();
 
 		void init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+		void renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box);
 		void handleEvents();
 		void update();
 		void render();
@@ -38,7 +39,7 @@ class Game {
 		SDL_Rect dest;
 		SDL_Texture* playerTexture;
 		SDL_Rect srcRect, destRect;
-		SDL_Texture* tex;
+		SDL_Texture* playerTex;
 };
 
 #endif // Game_hpp

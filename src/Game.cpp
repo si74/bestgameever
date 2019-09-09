@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "TextureManager.hpp"
 #include <stdio.h>
 
 
@@ -6,7 +7,6 @@
 
 Game::Game() {}
 Game::~Game() {}
-
 void Game::init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen) {
 	int flags = (fullscreen) ? SDL_WINDOW_FULLSCREEN : 0;
 
@@ -28,16 +28,11 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	isRunning = true;
 
-	SDL_Surface* tmpSurface = IMG_Load("../assets/player.png");
-
-	playerTexture = SDL_CreateTextureFromSurface(renderer, tmpSurface);
-	SDL_FreeSurface(tmpSurface);
-
-	SDL_Surface* tmpSurfaceCircle = IMG_Load("../assets/circle.png");
-	tex = SDL_CreateTextureFromSurface(renderer, tmpSurfaceCircle);
-	SDL_FreeSurface(tmpSurfaceCircle);
+	// loads file as texture
+	playerTex = TextureManager::LoadTexture("../assets/player.png", renderer);
+	
     // connects our texture with dest to control position
-    SDL_QueryTexture(tex, NULL, NULL, &dest.w, &dest.h);
+    SDL_QueryTexture(playerTex, NULL, NULL, &dest.w, &dest.h);
 
     // adjust height and width of our image box.
     dest.w /= 6;
@@ -55,23 +50,34 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
     // speed of box
     speed = 300;
 
+    
+}
+
+void Game::renderBlock(SDL_Window* window, SDL_Renderer* renderer, SDL_Rect* box) {
+	box->w = 10; 
+	box->h = 10; 
+	box->x = 0;
+	box->y = 0; 
+
+	//window = SDL_CreateWindow("", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 250, 250, NULL);
+	//renderer = SDL_CreateRenderer(window, 0, SDL_RENDERER_ACCELERATED);
+	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
+	SDL_RenderClear(renderer);
+	//outline rect
+	SDL_SetRenderDrawColor(renderer, 0 , 0, 0, 255);
+	SDL_RenderDrawRect(renderer, box);
+	//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	//fill up rectangle with color
+	//SDL_RenderFillRect(renderer, box);
 }
 
 void Game::handleEvents() {
-
 	SDL_Event event; 
 
 	// Events mangement 
 	while (SDL_PollEvent(&event)) { 
-		switch (event.type) { 
 
-		case SDL_QUIT:
-			// handling of close button 
-			isRunning = false; 
-			printf("close app\n");
-			break; 
-
-		case SDL_KEYDOWN: 
+		if (event.type == SDL_KEYDOWN){ 
 			// keyboard API for key pressed 
 			switch (event.key.keysym.scancode) { 
 				case SDL_SCANCODE_ESCAPE:
@@ -102,7 +108,7 @@ void Game::handleEvents() {
 
 	// right boundary 
 	if (dest.x + dest.w > 1000) {
-		x = 1000 - dest.w; 
+		dest.x = 1000 - dest.w; 
 	}
 
 	// left boundary 
@@ -131,9 +137,12 @@ void Game::update() {
 }
 
 void Game::render() {
+	SDL_SetRenderDrawColor(renderer, 255,255,255,255);
 	SDL_RenderClear(renderer);
-	//SDL_RenderCopy(renderer, playerTexture, NULL, &destRect);
-	SDL_RenderCopy(renderer, tex, NULL, &dest);
+	
+	SDL_Rect block1;
+	renderBlock(window, renderer, &block1); // TODO render background function that renders all the blocks, also sets boundaries for player
+	SDL_RenderCopy(renderer, playerTex, NULL, &dest); // player
 	SDL_RenderPresent(renderer);
 }
 
