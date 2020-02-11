@@ -15,7 +15,7 @@ inline ComponentID getComponentID() {
 	return lastID++;
 }
 
-template <typename T> inline ComponentID getComponentID() noexcept{
+template <typename T> inline ComponentID getComponentTypeID() noexcept{
 	static ComponentID typeID = getComponentID();
 	return typeID;
 }
@@ -56,4 +56,45 @@ class Entity {
 		void draw() {
 			
 		}
+		bool isActive() const {
+			return active;
+		}
+		void destroy() {
+			active = false;
+		}
+
+		template <typename T> bool hasComponent() const {
+			return componentBitSet[getComponentID<T>];
+		}
+
+		template <typename T, typename... TArgs>
+		T& addComponent(TArgs&&... mArgs){
+			T* c(new T(std::forward<TArgs>(mArgs)...));
+			c->entity = this;
+			std::unique_ptr<Component> uPtr{ c };
+			components.emplace_back(std::move(uPtr));
+
+			componentArray[getComponentTypeID<T>()] = c;
+			componentBitSet[getComponentTypeID<T>()] = true;
+
+			c->init();
+			return *c;
+		} 
+
+		template<typename T> T& getComponent() const {
+			auto ptr(componentArray[getComponentTypeID<T>()]);
+			return *static_cast<T*>(ptr);
+		}
+		//gameobject.getComponent<PositionComponent>().setXpos(25);
+};
+
+class Manager {
+private:
+	std::std::vector<std::unique_ptr<Entity>> entities;
+
+public:
+	void update() {
+		for (auto& e : entities) e->update();
+	} // TODO video 7 
+
 };
