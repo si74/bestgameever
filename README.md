@@ -1,6 +1,21 @@
 # bestgameever
 Working title for long-running single-player game.
 
+## Setup
+
+#### Mac OSX
+
+Note that all the relevant SDL and SDL_image libraries have been moved to the src/include and src/lib 
+directories as per these [instructions](https://medium.com/@edkins.sarah/set-up-sdl2-on-your-mac-without-xcode-6b0c33b723f7) on how to run on a MAC without using Xcode.
+
+To build and run, simply run the make command `build-osx`.
+
+#### Windows 
+
+For Windows, follow instructions [here](https://w3.cs.jmu.edu/bernstdh/Web/common/help/cpp_mingw-sdl-setup.php) to properly install and link SDL2 and SDLImage on a Windows machine. 
+
+Tun build and run on Windows, run `build-windows`.
+
 ## Rules
 
 1. Player starts at a 100 HP. If HP goes to 0, player dies.
@@ -71,4 +86,8 @@ They have the option to:
 1. Save progress in game:
 - In paper Mario, there are saved blocks but no "pause button"
 - In temple run, there is a pause button but no "saving" of gameplay
-- Perhaps we can later implement a "saved block", i.e. "saved progress" based on room.
+- Perhaps we can later implement a "saved block", i.e. "saved progress" based on room. 
+
+## Source Videos/Links
+
+- [Tutorial Series on Using SDL2](https://www.youtube.com/watch?v=QQzAHcojEKg)
