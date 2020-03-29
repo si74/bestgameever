@@ -2,8 +2,19 @@
 #include "TextureManager.hpp"
 #include <stdio.h>
 
+#include "ECS.hpp"
+#include "Components.hpp"
+#include "Map.hpp"
+
+GameObject* player;
+GameObject* enemy;
+Map* map;
 
 SDL_Renderer* Game::renderer = nullptr;
+
+Manager manager; // ECS
+auto& newPlayer(manager.addEntity()); // ECS
+
 
 Game::Game() {}
 Game::~Game() {}
@@ -52,6 +63,8 @@ void Game::init(const char* title, int xpos, int ypos, int width, int height, bo
 	speed = 300;
 
 	map = new Map();
+
+	newPlayer.addComponent<PositionComponent>(); // ECS
 
 }
 
@@ -162,6 +175,17 @@ void Game::update() {
 	destRect.h = 128;
 	destRect.w = 128;
 
+	player->Update();
+	enemy->Update();
+
+	//ECS
+	manager.update();
+
+	std::cout << newPlayer.getComponent<PositionComponent>().x() << "," <<
+		newPlayer.getComponent<PositionComponent>().y() << std::endl;
+
+
+
 	//map->LoadMap(); todo text file with different arrays
 }
 
@@ -184,3 +208,6 @@ void Game::clean() {
 	SDL_Quit();
 	printf("Game Cleaned\n");
 }
+
+
+

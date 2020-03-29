@@ -2,8 +2,13 @@
 #include "Game.hpp"
 
 GameObject::GameObject(const char* texturesheet) {
-
 	objTexture = TextureManager::LoadTexture(texturesheet);
+// GameObject::GameObject(const char* texturesheet, SDL_Renderer* ren, int x, int y) {
+	// renderer = ren;
+	// objTexture = TextureManager::LoadTexture(texturesheet, ren);
+
+	// xpos = x;
+	// ypos = y;
 }
 
 void GameObject::Update() {
